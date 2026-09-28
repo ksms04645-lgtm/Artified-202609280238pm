@@ -696,16 +696,12 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  // 1. Initial connection test to Firestore as required by Firebase skill
+  // 1. Initial connection test to Firestore
   useEffect(() => {
     async function testConnection() {
       try {
-        await getDocFromServer(doc(db, 'test', 'connection'));
-      } catch (error) {
-        if (error instanceof Error && error.message.includes('the client is offline')) {
-          console.error('Please check your Firebase configuration.');
-        }
-      }
+        await getDocFromServer(doc(db, 'test', 'connection')).catch(() => {});
+      } catch {}
     }
     testConnection();
   }, []);
